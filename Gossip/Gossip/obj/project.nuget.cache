@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "+BipTId3bWNoZ/6OXOTqi/0tZ7kYmEy4HlWE+BDnRzPK+7D+1sJvukdDcd42A6VxZRJ0BSRXBkCfEi0EY+5vtA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\moham\\Documents\\GitHub\\Asynchronous-Gossip\\Gossip\\Gossip\\Gossip.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\moham\\.nuget\\packages\\fsharp.core\\4.7.2\\fsharp.core.4.7.2.nupkg.sha512"
+  ],
+  "logs": []
+}
