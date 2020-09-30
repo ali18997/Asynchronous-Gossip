@@ -8,15 +8,23 @@ open Akka.Actor
 //Create System reference
 let system = System.create "system" <| Configuration.defaultConfig()
 
-type PushSumMessage() = 
-    [<DefaultValue>] val mutable s: int
-    [<DefaultValue>] val mutable w: int
+type Message() = 
+    [<DefaultValue>] val mutable num: int
+    [<DefaultValue>] val mutable s: bigint
+    [<DefaultValue>] val mutable w: bigint
 
-type GossipMessage() = 
-    [<DefaultValue>] val mutable rumor: int
+//CONTROL VARIABLES
 
+//CHANGE FROM ARGS
 let mutable topology = ""
+let mutable algorithm = ""
+
+//CHANGE HERE DIRECTLY
 let mutable actorNumber = 20
+let thresholdGossip = 10
+let thresholdPushSum = bigint 10**10
+
+
 let mutable arrayActor : IActorRef array = null
 
 let perfectSquare n =
@@ -28,27 +36,27 @@ let perfectSquare n =
             t*t = n
         else false
 
-let sendGossip num = 
-    let sendMsg = new GossipMessage()
-    sendMsg.rumor <- num
-    arrayActor.[num] <! sendMsg
+let sendMessage num s w = 
+    let sendMsg = new Message()
+    sendMsg.num <- num
+    sendMsg.s <- s
+    sendMsg.w <- w
+    arrayActor.[int num] <! sendMsg
 
 
 let getNeighbour currentNum = 
+    let objrandom = new Random()
     if topology = "full" then
-        let objrandom = new Random()
         let ran = objrandom.Next(0,actorNumber)
         ran
 
     //TO BE IMPLEMENTED        
     elif topology = "2D" then
-        let objrandom = new Random()
         let ran = objrandom.Next(0,5)
         ran
     
     //TO BE IMPLEMENTED
     elif topology = "imp2D" then
-        let objrandom = new Random()
         let ran = objrandom.Next(0,actorNumber)
         ran
 
@@ -58,7 +66,6 @@ let getNeighbour currentNum =
         elif currentNum = actorNumber-1 then
             actorNumber-2
         else
-            let objrandom = new Random()
             let ran = objrandom.Next(0,2)
             if ran = 0 then
                 currentNum + 1
@@ -70,21 +77,50 @@ let getNeighbour currentNum =
 
 
 //Actor
-let gossipActor (actorMailbox:Actor<GossipMessage>) = 
-    let mutable flag = false
+let actor (actorMailbox:Actor<Message>) = 
     let mutable count = 0
+    let mutable s = bigint -1
+    let mutable w = bigint 1
+    let mutable ratio1 = bigint 0
+    let mutable ratio2 = bigint 0
+    let mutable ratio3 = bigint 0
+    let mutable pushsumFlag = true
+    let mutable gossipFlag = true
+
 
     //Actor Loop that will process a message on each iteration
     let rec actorLoop() = actor {
 
         //Receive the message
         let! msg = actorMailbox.Receive()
-        printfn "%A" msg.rumor
+        printfn "ACTOR %A RECEIVED MSG" msg.num
+
+        let next = getNeighbour (int msg.num)
         count <- count + 1
-        flag <- true
-        if flag && count < 10 then
-            let next = getNeighbour msg.rumor
-            sendGossip next
+
+        //GOSSIP ALGORITHM
+        if algorithm = "gossip" && gossipFlag then
+            if count < thresholdGossip then
+                sendMessage next (bigint 0) (bigint 0)
+            else
+                gossipFlag <- false
+                printfn "ACTOR %A WILL NO LONGER SEND" msg.num      
+        
+        //PUSH-SUM ALGORITHM
+        elif algorithm = "push-sum" && pushsumFlag then
+            if s = bigint -1 then
+                s <- bigint msg.num
+            s <- s + msg.s
+            w <- w + msg.w
+   
+            ratio1 <- ratio2
+            ratio2 <- ratio3
+            ratio3 <- s/w
+
+            sendMessage next (s/bigint 2) (w/bigint 2)
+            if ratio3 - ratio1 < thresholdPushSum && count > 3 then
+                pushsumFlag <- false
+                printfn "ACTOR %A WILL NO LONGER SEND" msg.num    
             
 
         return! actorLoop()
@@ -104,16 +140,18 @@ let makeActors start =
 
     for i = 0 to actorNumber-1 do
         let name:string = "actor" + i.ToString() 
-        arrayActor.[i] <- spawn system name gossipActor 
+        arrayActor.[i] <- spawn system name actor 
 
 
 [<EntryPoint>]
 let main(args) =
-    topology <- "line"
+    topology <- "full"
+    //algorithm <- "push-sum"
+    algorithm <- "gossip"
 
     makeActors true
 
-    sendGossip 0
+    sendMessage 0 (bigint 0) (bigint 0)
 
     //Keep the console open by making it wait for key press
     System.Console.ReadKey() |> ignore
