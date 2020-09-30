@@ -16,7 +16,6 @@ C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netc
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.fsprojAssemblyReference.cache
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.AssemblyInfoInputs.cache
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.AssemblyInfo.fs
-C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.fsproj.CoreCompileInputs.cache
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.fsproj.CopyComplete
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Akka.dll
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
@@ -47,3 +46,14 @@ C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netc
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\System.Text.Json.dll
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Akka.Persistence.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Gossip.deps.json
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Gossip.runtimeconfig.json
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Gossip.runtimeconfig.dev.json
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Gossip.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Gossip.pdb
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\Akka.FSharp.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\FSharp.Quotations.Evaluator.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\FsPickler.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.pdb
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.genruntimeconfig.cache
