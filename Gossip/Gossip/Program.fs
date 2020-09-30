@@ -8,21 +8,39 @@ open Akka.Actor
 //Create System reference
 let system = System.create "system" <| Configuration.defaultConfig()
 
-type Message() = 
+type PushSumMessage() = 
     [<DefaultValue>] val mutable s: int
     [<DefaultValue>] val mutable w: int
 
+type GossipMessage() = 
+    [<DefaultValue>] val mutable rumor: int
+
+
+let actorNumber = 20
+let arrayActor : IActorRef array = Array.zeroCreate actorNumber
+
 
 //Actor
-let actor (actorMailbox:Actor<Message>) = 
+let gossipActor (actorMailbox:Actor<GossipMessage>) = 
+    let mutable flag = false
+    let mutable count = 0
 
     //Actor Loop that will process a message on each iteration
     let rec actorLoop() = actor {
 
         //Receive the message
         let! msg = actorMailbox.Receive()
-        printf "%A" msg.s
-        printf "%A" msg.w
+        printfn "%A" msg.rumor
+        count <- count + 1
+        flag <- true
+        if flag && count < 10 then
+            let objrandom = new Random()
+            let ran = objrandom.Next(0,actorNumber)
+
+            let sendMsg = new GossipMessage()
+            sendMsg.rumor <- ran
+            arrayActor.[ran] <! sendMsg
+            
 
         return! actorLoop()
     }
@@ -31,21 +49,29 @@ let actor (actorMailbox:Actor<Message>) =
     actorLoop()
 
 
+
+
+
+
+let gossipFull = 
+    for i = 0 to actorNumber-1 do
+        let name:string = "actor" + i.ToString() 
+        arrayActor.[i] <- spawn system name gossipActor 
+
+    let objrandom = new Random()
+    let ran = objrandom.Next(0,actorNumber)
+
+    let sendMsg = new GossipMessage()
+    sendMsg.rumor <- ran
+    arrayActor.[ran] <! sendMsg
+
+
+
 [<EntryPoint>]
 let main(args) =
 
-    //Create the starting message
-    let startMessage = new Message()
 
-    //Add values to the message
-    startMessage.s <- 0
-    startMessage.w <- 0
-
-    //Create the start actor
-    let startActor = spawn system "start" actor
-   
-    //And pass it the start message
-    startActor <! startMessage
+    gossipFull
 
     //Keep the console open by making it wait for key press
     System.Console.ReadKey() |> ignore
