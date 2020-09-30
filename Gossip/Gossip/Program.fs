@@ -39,14 +39,31 @@ let getNeighbour currentNum =
         let objrandom = new Random()
         let ran = objrandom.Next(0,actorNumber)
         ran
+
+    //TO BE IMPLEMENTED        
     elif topology = "2D" then
         let objrandom = new Random()
-        let ran = objrandom.Next(0,actorNumber)
+        let ran = objrandom.Next(0,5)
         ran
+    
+    //TO BE IMPLEMENTED
     elif topology = "imp2D" then
         let objrandom = new Random()
         let ran = objrandom.Next(0,actorNumber)
         ran
+
+    elif topology = "line" then
+        if currentNum = 0 then
+            1
+        elif currentNum = actorNumber-1 then
+            actorNumber-2
+        else
+            let objrandom = new Random()
+            let ran = objrandom.Next(0,2)
+            if ran = 0 then
+                currentNum + 1
+            else
+                currentNum - 1
     else 
        0
 
@@ -92,7 +109,7 @@ let makeActors start =
 
 [<EntryPoint>]
 let main(args) =
-    topology <- "2D"
+    topology <- "line"
 
     makeActors true
 
