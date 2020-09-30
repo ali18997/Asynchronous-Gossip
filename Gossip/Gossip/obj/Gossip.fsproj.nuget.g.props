@@ -17,5 +17,11 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\moham\.nuget\packages\fsharp.core\4.7.2</PkgFSharp_Core>
+    <PkgAkka Condition=" '$(PkgAkka)' == '' ">C:\Users\moham\.nuget\packages\akka\1.4.10</PkgAkka>
+    <PkgAkka_Remote Condition=" '$(PkgAkka_Remote)' == '' ">C:\Users\moham\.nuget\packages\akka.remote\1.4.10</PkgAkka_Remote>
+    <PkgAkka_Persistence Condition=" '$(PkgAkka_Persistence)' == '' ">C:\Users\moham\.nuget\packages\akka.persistence\1.4.10</PkgAkka_Persistence>
+    <PkgAkka_FSharp Condition=" '$(PkgAkka_FSharp)' == '' ">C:\Users\moham\.nuget\packages\akka.fsharp\1.4.10</PkgAkka_FSharp>
+    <PkgAkka_DI_Core Condition=" '$(PkgAkka_DI_Core)' == '' ">C:\Users\moham\.nuget\packages\akka.di.core\1.4.10</PkgAkka_DI_Core>
+    <PkgAkka_Cluster Condition=" '$(PkgAkka_Cluster)' == '' ">C:\Users\moham\.nuget\packages\akka.cluster\1.4.10</PkgAkka_Cluster>
   </PropertyGroup>
 </Project>
