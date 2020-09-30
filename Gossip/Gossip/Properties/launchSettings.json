@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Gossip": {
+      "commandName": "Project",
+      "commandLineArgs": "2000 imp2D push-sum"
+    }
+  }
+}

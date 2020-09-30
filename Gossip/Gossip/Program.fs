@@ -18,9 +18,9 @@ type Message() =
 //CHANGE FROM ARGS
 let mutable topology = ""
 let mutable algorithm = ""
+let mutable numNodes = 0
 
 //CHANGE HERE DIRECTLY
-let mutable actorNumber = 16
 let thresholdGossip = 10
 let thresholdPushSum = bigint 10**10
 
@@ -66,9 +66,9 @@ let sendMessage num s w =
 
 let getNeighbour currentNum = 
     let objrandom = new Random()
-    let side = (int (sqrt (float actorNumber)))
+    let side = (int (sqrt (float numNodes)))
     if topology = "full" then
-        let ran = objrandom.Next(0,actorNumber)
+        let ran = objrandom.Next(0,numNodes)
         ran
      
     elif topology = "2D" then
@@ -78,15 +78,15 @@ let getNeighbour currentNum =
     elif topology = "imp2D" then
         let ran = objrandom.Next(0,6)
         if ran = 5 then
-            objrandom.Next(0,actorNumber)
+            objrandom.Next(0,numNodes)
         else
             neighbour2D currentNum side ran
 
     elif topology = "line" then
         if currentNum = 0 then
             1
-        elif currentNum = actorNumber-1 then
-            actorNumber-2
+        elif currentNum = numNodes-1 then
+            numNodes-2
         else
             let ran = objrandom.Next(0,2)
             if ran = 0 then
@@ -139,10 +139,12 @@ let actor (actorMailbox:Actor<Message>) =
             ratio2 <- ratio3
             ratio3 <- s/w
 
-            sendMessage next (s/bigint 2) (w/bigint 2)
+            
             if ratio3 - ratio1 < thresholdPushSum && count > 3 then
                 pushsumFlag <- false
-                printfn "ACTOR %A WILL NO LONGER SEND" msg.num    
+                printfn "ACTOR %A WILL NO LONGER SEND" msg.num   
+            else 
+                sendMessage next (s/bigint 2) (w/bigint 2)
             
 
         return! actorLoop()
@@ -155,24 +157,26 @@ let actor (actorMailbox:Actor<Message>) =
 let makeActors start =
 
     if topology = "2D" || topology = "imp2D" then
-        while perfectSquare actorNumber = false do
-            actorNumber <- actorNumber + 1
+        while perfectSquare numNodes = false do
+            numNodes <- numNodes + 1
 
-    arrayActor <- Array.zeroCreate actorNumber
+    arrayActor <- Array.zeroCreate numNodes
 
-    for i = 0 to actorNumber-1 do
+    for i = 0 to numNodes-1 do
         let name:string = "actor" + i.ToString() 
         arrayActor.[i] <- spawn system name actor 
 
 
 [<EntryPoint>]
 let main(args) =
-    topology <- "imp2D"
-    algorithm <- "push-sum"
-    //algorithm <- "gossip"
+
+    numNodes <- args.[0] |> int
+
+    topology <- args.[1] |> string
+
+    algorithm <- args.[2] |> string
 
     makeActors true
-    printfn "%i" (0%4)
 
     sendMessage 0 (bigint 0) (bigint 0)
 
