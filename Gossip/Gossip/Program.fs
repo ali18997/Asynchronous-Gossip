@@ -20,7 +20,7 @@ let mutable topology = ""
 let mutable algorithm = ""
 
 //CHANGE HERE DIRECTLY
-let mutable actorNumber = 20
+let mutable actorNumber = 16
 let thresholdGossip = 10
 let thresholdPushSum = bigint 10**10
 
@@ -36,6 +36,26 @@ let perfectSquare n =
             t*t = n
         else false
 
+let neighbour2D currentNum side ran = 
+    if ran = 0 && (currentNum % side) <> 0 then
+        currentNum - 1
+    elif ran = 0 && (currentNum % side) = 0 then
+        currentNum + 1
+    elif ran = 1 && ((currentNum + 1) % side) <> 0 then
+        currentNum + 1
+    elif ran = 1 && ((currentNum + 1) % side) = 0 then
+        currentNum - 1
+    elif ran = 2 && currentNum + side < side*side then
+        currentNum + side
+    elif ran = 2 && currentNum + side > side*side then
+        currentNum - side
+    elif ran = 3 && currentNum - side >= 0 then
+        currentNum - side
+    elif ran = 3 && currentNum - side < 0 then
+        currentNum + side
+    else
+        0
+
 let sendMessage num s w = 
     let sendMsg = new Message()
     sendMsg.num <- num
@@ -46,19 +66,21 @@ let sendMessage num s w =
 
 let getNeighbour currentNum = 
     let objrandom = new Random()
+    let side = (int (sqrt (float actorNumber)))
     if topology = "full" then
         let ran = objrandom.Next(0,actorNumber)
         ran
-
-    //TO BE IMPLEMENTED        
+     
     elif topology = "2D" then
         let ran = objrandom.Next(0,5)
-        ran
+        neighbour2D currentNum side ran
     
-    //TO BE IMPLEMENTED
     elif topology = "imp2D" then
-        let ran = objrandom.Next(0,actorNumber)
-        ran
+        let ran = objrandom.Next(0,6)
+        if ran = 5 then
+            objrandom.Next(0,actorNumber)
+        else
+            neighbour2D currentNum side ran
 
     elif topology = "line" then
         if currentNum = 0 then
@@ -145,11 +167,12 @@ let makeActors start =
 
 [<EntryPoint>]
 let main(args) =
-    topology <- "full"
-    //algorithm <- "push-sum"
-    algorithm <- "gossip"
+    topology <- "imp2D"
+    algorithm <- "push-sum"
+    //algorithm <- "gossip"
 
     makeActors true
+    printfn "%i" (0%4)
 
     sendMessage 0 (bigint 0) (bigint 0)
 
