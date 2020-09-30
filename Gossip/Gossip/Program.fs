@@ -15,17 +15,25 @@ type PushSumMessage() =
 type GossipMessage() = 
     [<DefaultValue>] val mutable rumor: int
 
-let mutable algo = ""
+let mutable topology = ""
 let mutable actorNumber = 20
 let arrayActor : IActorRef array = Array.zeroCreate actorNumber
 
+let sendGossip num = 
+    let sendMsg = new GossipMessage()
+    sendMsg.rumor <- num
+    arrayActor.[num] <! sendMsg
+
+
 let getNeighbour currentNum = 
-    if algo = "full" then
+    if topology = "full" then
         let objrandom = new Random()
         let ran = objrandom.Next(0,actorNumber)
         ran
     else 
        0
+
+
 
 //Actor
 let gossipActor (actorMailbox:Actor<GossipMessage>) = 
@@ -42,9 +50,7 @@ let gossipActor (actorMailbox:Actor<GossipMessage>) =
         flag <- true
         if flag && count < 10 then
             let next = getNeighbour msg.rumor
-            let sendMsg = new GossipMessage()
-            sendMsg.rumor <- next
-            arrayActor.[next] <! sendMsg
+            sendGossip next
             
 
         return! actorLoop()
@@ -54,30 +60,22 @@ let gossipActor (actorMailbox:Actor<GossipMessage>) =
     actorLoop()
 
 
-
-
-
-
-let gossipFull = 
-    algo <- "full"
+let makeActors =     
     for i = 0 to actorNumber-1 do
         let name:string = "actor" + i.ToString() 
         arrayActor.[i] <- spawn system name gossipActor 
 
-    let objrandom = new Random()
-    let ran = objrandom.Next(0,actorNumber)
 
-    let sendMsg = new GossipMessage()
-    sendMsg.rumor <- ran
-    arrayActor.[ran] <! sendMsg
 
 
 
 [<EntryPoint>]
 let main(args) =
+    topology <- "full"
 
+    makeActors
 
-    gossipFull
+    sendGossip 0
 
     //Keep the console open by making it wait for key press
     System.Console.ReadKey() |> ignore
