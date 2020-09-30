@@ -15,10 +15,17 @@ type PushSumMessage() =
 type GossipMessage() = 
     [<DefaultValue>] val mutable rumor: int
 
-
-let actorNumber = 20
+let mutable algo = ""
+let mutable actorNumber = 20
 let arrayActor : IActorRef array = Array.zeroCreate actorNumber
 
+let getNeighbour currentNum = 
+    if algo = "full" then
+        let objrandom = new Random()
+        let ran = objrandom.Next(0,actorNumber)
+        ran
+    else 
+       0
 
 //Actor
 let gossipActor (actorMailbox:Actor<GossipMessage>) = 
@@ -34,12 +41,10 @@ let gossipActor (actorMailbox:Actor<GossipMessage>) =
         count <- count + 1
         flag <- true
         if flag && count < 10 then
-            let objrandom = new Random()
-            let ran = objrandom.Next(0,actorNumber)
-
+            let next = getNeighbour msg.rumor
             let sendMsg = new GossipMessage()
-            sendMsg.rumor <- ran
-            arrayActor.[ran] <! sendMsg
+            sendMsg.rumor <- next
+            arrayActor.[next] <! sendMsg
             
 
         return! actorLoop()
@@ -54,6 +59,7 @@ let gossipActor (actorMailbox:Actor<GossipMessage>) =
 
 
 let gossipFull = 
+    algo <- "full"
     for i = 0 to actorNumber-1 do
         let name:string = "actor" + i.ToString() 
         arrayActor.[i] <- spawn system name gossipActor 
