@@ -17,7 +17,16 @@ type GossipMessage() =
 
 let mutable topology = ""
 let mutable actorNumber = 20
-let arrayActor : IActorRef array = Array.zeroCreate actorNumber
+let mutable arrayActor : IActorRef array = null
+
+let perfectSquare n =
+    let h = n &&& 0xF
+    if (h > 9) then false
+    else
+        if ( h <> 2 && h <> 3 && h <> 5 && h <> 6 && h <> 7 && h <> 8 ) then
+            let t = ((n |> double |> sqrt) + 0.5) |> floor|> int
+            t*t = n
+        else false
 
 let sendGossip num = 
     let sendMsg = new GossipMessage()
@@ -27,6 +36,14 @@ let sendGossip num =
 
 let getNeighbour currentNum = 
     if topology = "full" then
+        let objrandom = new Random()
+        let ran = objrandom.Next(0,actorNumber)
+        ran
+    elif topology = "2D" then
+        let objrandom = new Random()
+        let ran = objrandom.Next(0,actorNumber)
+        ran
+    elif topology = "imp2D" then
         let objrandom = new Random()
         let ran = objrandom.Next(0,actorNumber)
         ran
@@ -60,20 +77,24 @@ let gossipActor (actorMailbox:Actor<GossipMessage>) =
     actorLoop()
 
 
-let makeActors =     
+let makeActors start =
+
+    if topology = "2D" || topology = "imp2D" then
+        while perfectSquare actorNumber = false do
+            actorNumber <- actorNumber + 1
+
+    arrayActor <- Array.zeroCreate actorNumber
+
     for i = 0 to actorNumber-1 do
         let name:string = "actor" + i.ToString() 
         arrayActor.[i] <- spawn system name gossipActor 
 
 
-
-
-
 [<EntryPoint>]
 let main(args) =
-    topology <- "full"
+    topology <- "2D"
 
-    makeActors
+    makeActors true
 
     sendGossip 0
 
