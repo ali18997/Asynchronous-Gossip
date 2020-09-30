@@ -27,6 +27,8 @@ let thresholdPushSum = bigint 10**10
 
 let mutable arrayActor : IActorRef array = null
 
+let timer = new Stopwatch()
+
 let perfectSquare n =
     let h = n &&& 0xF
     if (h > 9) then false
@@ -126,8 +128,10 @@ let actor (actorMailbox:Actor<Message>) =
                 sendMessage next (bigint 0) (bigint 0)
             else
                 gossipFlag <- false
-                printfn "ACTOR %A WILL NO LONGER SEND" msg.num      
-        
+                let realTime = timer.ElapsedMilliseconds
+                printfn "ACTOR %A WILL NO LONGER SEND" msg.num   
+                printfn "TIME: %dms" realTime
+
         //PUSH-SUM ALGORITHM
         elif algorithm = "push-sum" && pushsumFlag then
             if s = bigint -1 then
@@ -142,7 +146,9 @@ let actor (actorMailbox:Actor<Message>) =
             
             if ratio3 - ratio1 < thresholdPushSum && count > 3 then
                 pushsumFlag <- false
+                let realTime = timer.ElapsedMilliseconds
                 printfn "ACTOR %A WILL NO LONGER SEND" msg.num   
+                printfn "TIME: %dms" realTime
             else 
                 sendMessage next (s/bigint 2) (w/bigint 2)
             
@@ -177,7 +183,8 @@ let main(args) =
     algorithm <- args.[2] |> string
 
     makeActors true
-
+    
+    timer.Start()
     sendMessage 0 (bigint 0) (bigint 0)
 
     //Keep the console open by making it wait for key press
