@@ -72,6 +72,9 @@ let sendMessage num s w =
     sendMsg.w <- w
     arrayActor.[int num] <! sendMsg
 
+let killActor num = 
+    arrayActor.[int num] <! PoisonPill.Instance
+
 
 let getNeighbour currentNum = 
     let objrandom = new Random()
@@ -119,7 +122,6 @@ let actor (actorMailbox:Actor<Message>) =
     let mutable ratio1 = bigint 0
     let mutable ratio2 = bigint 0
     let mutable ratio3 = bigint 0
-    let mutable stopFlag = true
 
     //GOSSIP ALGORITHM
     let gossip num next =
@@ -127,7 +129,7 @@ let actor (actorMailbox:Actor<Message>) =
             sendMessage next (bigint 0) (bigint 0)
         else
             stopTime num
-            stopFlag <- false
+            killActor num
 
     //PUSH-SUM ALGORITHM
     let pushSum next num ms mw =
@@ -142,7 +144,8 @@ let actor (actorMailbox:Actor<Message>) =
 
         if ratio3 - ratio1 < thresholdPushSum && count > 3 then
             stopTime num
-            stopFlag <- false
+            killActor num
+
         else 
             sendMessage next (s/bigint 2) (w/bigint 2)
 
@@ -156,10 +159,10 @@ let actor (actorMailbox:Actor<Message>) =
         
         let next = getNeighbour msg.num
 
-        if algorithm = "gossip" && stopFlag then
-            gossip msg.num next 
+        if algorithm = "gossip" then
+            gossip (bigint msg.num) next 
 
-        elif algorithm = "push-sum" && stopFlag then  
+        elif algorithm = "push-sum" then  
             pushSum next (bigint msg.num) msg.s msg.w
 
 
