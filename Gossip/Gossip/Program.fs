@@ -21,13 +21,20 @@ let mutable algorithm = ""
 let mutable numNodes = 0
 
 //CHANGE HERE DIRECTLY
+let printFlag = true
 let thresholdGossip = 10
 let thresholdPushSum = bigint 10**10
 
 
 let mutable arrayActor : IActorRef array = null
 
+
 let timer = new Stopwatch()
+
+let stopTime num = 
+    let realTime = timer.ElapsedMilliseconds
+    printfn "ACTOR %A WILL NO LONGER SEND" num   
+    printfn "TIME: %dms" realTime
 
 let perfectSquare n =
     let h = n &&& 0xF
@@ -49,7 +56,7 @@ let neighbour2D currentNum side ran =
         currentNum - 1
     elif ran = 2 && currentNum + side < side*side then
         currentNum + side
-    elif ran = 2 && currentNum + side > side*side then
+    elif ran = 2 && currentNum + side >= side*side then
         currentNum - side
     elif ran = 3 && currentNum - side >= 0 then
         currentNum - side
@@ -74,12 +81,12 @@ let getNeighbour currentNum =
         ran
      
     elif topology = "2D" then
-        let ran = objrandom.Next(0,5)
+        let ran = objrandom.Next(0,4)
         neighbour2D currentNum side ran
     
     elif topology = "imp2D" then
-        let ran = objrandom.Next(0,6)
-        if ran = 5 then
+        let ran = objrandom.Next(0,5)
+        if ran = 4 then
             objrandom.Next(0,numNodes)
         else
             neighbour2D currentNum side ran
@@ -95,10 +102,8 @@ let getNeighbour currentNum =
                 currentNum + 1
             else
                 currentNum - 1
-    else 
+    else
        0
-
-
 
 //Actor
 let actor (actorMailbox:Actor<Message>) = 
@@ -108,8 +113,46 @@ let actor (actorMailbox:Actor<Message>) =
     let mutable ratio1 = bigint 0
     let mutable ratio2 = bigint 0
     let mutable ratio3 = bigint 0
-    let mutable pushsumFlag = true
-    let mutable gossipFlag = true
+    let mutable stopFlag = true
+
+    //GOSSIP ALGORITHM
+    let gossip num next =
+        if count < thresholdGossip then
+            sendMessage next (bigint 0) (bigint 0)
+        else
+            stopTime num
+            stopFlag <- false
+
+    //PUSH-SUM ALGORITHM
+    let pushSum next num ms mw =
+        if s = bigint -1 then
+            s <- num
+        s <- s + ms
+        w <- w + mw
+   
+        ratio1 <- ratio2
+        ratio2 <- ratio3
+        ratio3 <- s/w
+
+        if ratio3 - ratio1 < thresholdPushSum && count > 3 then
+            stopTime num
+            stopFlag <- false
+        else 
+            sendMessage next (s/bigint 2) (w/bigint 2)
+
+    //RUN ALGORITHM
+    let runAlgo msg =
+        let m:Message = msg
+
+        count <- count + 1
+        
+        let next = getNeighbour (int m.num)
+
+        if algorithm = "gossip" && stopFlag then
+            gossip m.num next 
+
+        elif algorithm = "push-sum" && stopFlag then  
+            pushSum next (bigint m.num) m.s m.w
 
 
     //Actor Loop that will process a message on each iteration
@@ -118,41 +161,9 @@ let actor (actorMailbox:Actor<Message>) =
         //Receive the message
         let! msg = actorMailbox.Receive()
         printfn "ACTOR %A RECEIVED MSG" msg.num
-
-        let next = getNeighbour (int msg.num)
-        count <- count + 1
-
-        //GOSSIP ALGORITHM
-        if algorithm = "gossip" && gossipFlag then
-            if count < thresholdGossip then
-                sendMessage next (bigint 0) (bigint 0)
-            else
-                gossipFlag <- false
-                let realTime = timer.ElapsedMilliseconds
-                printfn "ACTOR %A WILL NO LONGER SEND" msg.num   
-                printfn "TIME: %dms" realTime
-
-        //PUSH-SUM ALGORITHM
-        elif algorithm = "push-sum" && pushsumFlag then
-            if s = bigint -1 then
-                s <- bigint msg.num
-            s <- s + msg.s
-            w <- w + msg.w
-   
-            ratio1 <- ratio2
-            ratio2 <- ratio3
-            ratio3 <- s/w
-
+        
+        runAlgo msg
             
-            if ratio3 - ratio1 < thresholdPushSum && count > 3 then
-                pushsumFlag <- false
-                let realTime = timer.ElapsedMilliseconds
-                printfn "ACTOR %A WILL NO LONGER SEND" msg.num   
-                printfn "TIME: %dms" realTime
-            else 
-                sendMessage next (s/bigint 2) (w/bigint 2)
-            
-
         return! actorLoop()
     }
 
