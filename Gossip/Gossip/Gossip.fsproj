@@ -16,6 +16,10 @@
     <PackageReference Include="Akka.FSharp" Version="1.4.10" />
     <PackageReference Include="Akka.Persistence" Version="1.4.10" />
     <PackageReference Include="Akka.Remote" Version="1.4.10" />
+    <PackageReference Include="BigRationalLibrary" Version="1.0.0" />
+    <PackageReference Include="FSPowerPack.Community" Version="3.0.0" />
+    <PackageReference Include="FSPowerPack.Core.Community" Version="3.0.0" />
+    <PackageReference Include="FSPowerPack.Linq.Community" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

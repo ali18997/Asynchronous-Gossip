@@ -16,7 +16,11 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgFSPowerPack_Core_Community Condition=" '$(PkgFSPowerPack_Core_Community)' == '' ">C:\Users\moham\.nuget\packages\fspowerpack.core.community\3.0.0</PkgFSPowerPack_Core_Community>
+    <PkgFSPowerPack_Linq_Community Condition=" '$(PkgFSPowerPack_Linq_Community)' == '' ">C:\Users\moham\.nuget\packages\fspowerpack.linq.community\3.0.0</PkgFSPowerPack_Linq_Community>
+    <PkgFSPowerPack_Community Condition=" '$(PkgFSPowerPack_Community)' == '' ">C:\Users\moham\.nuget\packages\fspowerpack.community\3.0.0</PkgFSPowerPack_Community>
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\moham\.nuget\packages\fsharp.core\4.7.2</PkgFSharp_Core>
+    <PkgBigRationalLibrary Condition=" '$(PkgBigRationalLibrary)' == '' ">C:\Users\moham\.nuget\packages\bigrationallibrary\1.0.0</PkgBigRationalLibrary>
     <PkgAkka Condition=" '$(PkgAkka)' == '' ">C:\Users\moham\.nuget\packages\akka\1.4.10</PkgAkka>
     <PkgAkka_Remote Condition=" '$(PkgAkka_Remote)' == '' ">C:\Users\moham\.nuget\packages\akka.remote\1.4.10</PkgAkka_Remote>
     <PkgAkka_Persistence Condition=" '$(PkgAkka_Persistence)' == '' ">C:\Users\moham\.nuget\packages\akka.persistence\1.4.10</PkgAkka_Persistence>

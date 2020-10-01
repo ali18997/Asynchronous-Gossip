@@ -83,6 +83,15 @@
           "lib/netstandard2.0/Akka.Remote.dll": {}
         }
       },
+      "BigRationalLibrary/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/NETFramework40/BigRationalLibrary.dll": {}
+        },
+        "runtime": {
+          "lib/NETFramework40/BigRationalLibrary.dll": {}
+        }
+      },
       "DotNetty.Buffers/0.6.0": {
         "type": "package",
         "dependencies": {
@@ -244,6 +253,59 @@
         },
         "runtime": {
           "lib/netstandard2.0/FsPickler.dll": {}
+        }
+      },
+      "FSPowerPack.Community/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSPowerPack.Linq.Community": "(, )",
+          "FSPowerPack.Metadata.Community": "(, )",
+          "FSPowerPack.Parallel.Seq.Community": "(, )"
+        }
+      },
+      "FSPowerPack.Core.Community/3.0.0": {
+        "type": "package",
+        "compile": {
+          "Lib/Net40/FSharp.PowerPack.dll": {}
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.dll": {}
+        }
+      },
+      "FSPowerPack.Linq.Community/3.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSPowerPack.Core.Community": "(, )"
+        },
+        "compile": {
+          "Lib/Net40/FSharp.PowerPack.Linq.dll": {}
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.Linq.dll": {}
+        }
+      },
+      "FSPowerPack.Metadata.Community/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSPowerPack.Core.Community": "[1.9.9.9, 2.9.9.9)"
+        },
+        "compile": {
+          "Lib/Net40/FSharp.PowerPack.Metadata.dll": {}
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.Metadata.dll": {}
+        }
+      },
+      "FSPowerPack.Parallel.Seq.Community/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FSPowerPack.Core.Community": "[1.9.9.9, 2.9.9.9)"
+        },
+        "compile": {
+          "Lib/Net40/FSharp.PowerPack.Parallel.Seq.dll": {}
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.Parallel.Seq.dll": {}
         }
       },
       "Google.Protobuf/3.13.0": {
@@ -2036,6 +2098,18 @@
         "lib/netstandard2.0/Akka.Remote.xml"
       ]
     },
+    "BigRationalLibrary/1.0.0": {
+      "sha512": "081lH0TQsLFKxrnKCkxkkShTFbOL3YcWYMEftBu2vMZuw63yBQeo1z4DhxyGUfJ59KSD4IA9M277SNIsjZXZCw==",
+      "type": "package",
+      "path": "bigrationallibrary/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bigrationallibrary.1.0.0.nupkg.sha512",
+        "bigrationallibrary.nuspec",
+        "lib/NETFramework40/BigRationalLibrary.dll"
+      ]
+    },
     "DotNetty.Buffers/0.6.0": {
       "sha512": "MjxoFMdKsSJ5CLKTFHTKYoFUZUvC6VHGx71vPLSflmR/X4dSm57/hVxhsQY3YU6aASeRjqgNiCHn4II+UNOIWQ==",
       "type": "package",
@@ -2189,6 +2263,103 @@
         "lib/netstandard2.0/FsPickler.dll",
         "lib/netstandard2.0/FsPickler.pdb",
         "lib/netstandard2.0/FsPickler.xml"
+      ]
+    },
+    "FSPowerPack.Community/3.0.0": {
+      "sha512": "tkBrn/2KDqn1FvLjmrchsu75+iztqxW9I1kg7g4Wyy+7maHQEU9gJPRoPal3zL8w6hfkTWmMUcjqQiBLbPIcdQ==",
+      "type": "package",
+      "path": "fspowerpack.community/3.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/InstallationDummyFile.txt",
+        "Tools/FSharp.Compiler.CodeDom.dll",
+        "Tools/FSharp.Compiler.CodeDom.xml",
+        "Tools/FSharp.PowerPack.Build.Tasks.dll",
+        "Tools/FSharp.PowerPack.Build.Tasks.xml",
+        "Tools/FSharp.PowerPack.Compatibility.dll",
+        "Tools/FSharp.PowerPack.Compatibility.xml",
+        "Tools/FSharp.PowerPack.targets",
+        "Tools/fslex.exe",
+        "Tools/fsyacc.exe",
+        "Tools/install.ps1",
+        "fspowerpack.community.3.0.0.nupkg.sha512",
+        "fspowerpack.community.nuspec"
+      ]
+    },
+    "FSPowerPack.Core.Community/3.0.0": {
+      "sha512": "x5jhAZY0HwTB1/MAfWcfRbroKjoHgyjRpjjx2VEZwzvcQLK2MAq/me8o2xux2+Gqac9T8MidzkYpUpIYIgp+5Q==",
+      "type": "package",
+      "path": "fspowerpack.core.community/3.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Lib/Net20/FSharp.PowerPack.dll",
+        "Lib/Net20/FSharp.PowerPack.xml",
+        "Lib/Net40/FSharp.PowerPack.dll",
+        "Lib/Net40/FSharp.PowerPack.xml",
+        "Lib/sl3-wp/FSharp.PowerPack.Compatibility.dll",
+        "Lib/sl3-wp/FSharp.PowerPack.dll",
+        "Lib/sl3/FSharp.PowerPack.Compatibility.dll",
+        "Lib/sl3/FSharp.PowerPack.dll",
+        "Lib/sl4-windowsphone71/FSharp.PowerPack.Compatibility.dll",
+        "Lib/sl4-windowsphone71/FSharp.PowerPack.dll",
+        "Lib/sl4/FSharp.PowerPack.Compatibility.dll",
+        "Lib/sl4/FSharp.PowerPack.dll",
+        "Lib/sl5/FSharp.PowerPack.Compatibility.dll",
+        "Lib/sl5/FSharp.PowerPack.Linq.dll",
+        "Lib/sl5/FSharp.PowerPack.dll",
+        "fspowerpack.core.community.3.0.0.nupkg.sha512",
+        "fspowerpack.core.community.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "FSPowerPack.Linq.Community/3.0.0": {
+      "sha512": "v6tN7v74Gu3+Md3n6VVKL/JJa1+jny9/oQplhzwKPfZtMjAeCwGeSkDTspmIu9hECOI/j7I9rdr3naoCg8iEZw==",
+      "type": "package",
+      "path": "fspowerpack.linq.community/3.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Lib/Net20/FSharp.PowerPack.Linq.dll",
+        "Lib/Net20/FSharp.PowerPack.Linq.xml",
+        "Lib/Net40/FSharp.PowerPack.Linq.dll",
+        "Lib/Net40/FSharp.PowerPack.Linq.xml",
+        "fspowerpack.linq.community.3.0.0.nupkg.sha512",
+        "fspowerpack.linq.community.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "FSPowerPack.Metadata.Community/2.0.0": {
+      "sha512": "3HCl+b+UQ7dcpBLxm4eaCTxKdW2j5zflCv2pNvX8SNjwniHoxcNMm7F7x+RRULFTRi5E5+9UwCTZ7YlbJ3M7Jg==",
+      "type": "package",
+      "path": "fspowerpack.metadata.community/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Lib/Net20/FSharp.PowerPack.Metadata.dll",
+        "Lib/Net20/FSharp.PowerPack.Metadata.xml",
+        "Lib/Net40/FSharp.PowerPack.Metadata.dll",
+        "Lib/Net40/FSharp.PowerPack.Metadata.xml",
+        "fspowerpack.metadata.community.2.0.0.nupkg.sha512",
+        "fspowerpack.metadata.community.nuspec"
+      ]
+    },
+    "FSPowerPack.Parallel.Seq.Community/2.0.0": {
+      "sha512": "63AchEx0X39linzcydLfVFHE3b9wwH0lUwGPsl9R+lK6a48Y2+X2LS79RdCKD12WvNUCSVXZFUmkFq0I6KuSgA==",
+      "type": "package",
+      "path": "fspowerpack.parallel.seq.community/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Lib/Net40/FSharp.PowerPack.Parallel.Seq.dll",
+        "Lib/Net40/FSharp.PowerPack.Parallel.Seq.xml",
+        "Lib/Net40/FSharp.PowerPack.xml",
+        "fspowerpack.parallel.seq.community.2.0.0.nupkg.sha512",
+        "fspowerpack.parallel.seq.community.nuspec"
       ]
     },
     "Google.Protobuf/3.13.0": {
@@ -6530,6 +6701,10 @@
       "Akka.FSharp >= 1.4.10",
       "Akka.Persistence >= 1.4.10",
       "Akka.Remote >= 1.4.10",
+      "BigRationalLibrary >= 1.0.0",
+      "FSPowerPack.Community >= 3.0.0",
+      "FSPowerPack.Core.Community >= 3.0.0",
+      "FSPowerPack.Linq.Community >= 3.0.0",
       "FSharp.Core >= 4.7.2"
     ]
   },
@@ -6595,6 +6770,26 @@
             "version": "[1.4.10, )",
             "generatePathProperty": true
           },
+          "BigRationalLibrary": {
+            "target": "Package",
+            "version": "[1.0.0, )",
+            "generatePathProperty": true
+          },
+          "FSPowerPack.Community": {
+            "target": "Package",
+            "version": "[3.0.0, )",
+            "generatePathProperty": true
+          },
+          "FSPowerPack.Core.Community": {
+            "target": "Package",
+            "version": "[3.0.0, )",
+            "generatePathProperty": true
+          },
+          "FSPowerPack.Linq.Community": {
+            "target": "Package",
+            "version": "[3.0.0, )",
+            "generatePathProperty": true
+          },
           "FSharp.Core": {
             "target": "Package",
             "version": "[4.7.2, )",
@@ -6619,5 +6814,97 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "FSPowerPack.Community 3.0.0 does not provide an inclusive lower bound for dependency FSPowerPack.Metadata.Community. An approximate best match of FSPowerPack.Metadata.Community 2.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Metadata.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "FSPowerPack.Community 3.0.0 does not provide an inclusive lower bound for dependency FSPowerPack.Parallel.Seq.Community. An approximate best match of FSPowerPack.Parallel.Seq.Community 2.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Parallel.Seq.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Metadata.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Core.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Parallel.Seq.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Core.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'BigRationalLibrary 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "BigRationalLibrary",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Core.Community 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Core.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Linq.Community 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Linq.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Metadata.Community 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Metadata.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Parallel.Seq.Community 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Parallel.Seq.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

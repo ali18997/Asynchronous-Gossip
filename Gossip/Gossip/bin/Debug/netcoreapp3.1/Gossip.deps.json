@@ -14,6 +14,10 @@
           "Akka.FSharp": "1.4.10",
           "Akka.Persistence": "1.4.10",
           "Akka.Remote": "1.4.10",
+          "BigRationalLibrary": "1.0.0",
+          "FSPowerPack.Community": "3.0.0",
+          "FSPowerPack.Core.Community": "3.0.0",
+          "FSPowerPack.Linq.Community": "3.0.0",
           "FSharp.Core": "4.7.2"
         },
         "runtime": {
@@ -92,6 +96,14 @@
           "lib/netstandard2.0/Akka.Remote.dll": {
             "assemblyVersion": "1.4.10.0",
             "fileVersion": "1.4.10.0"
+          }
+        }
+      },
+      "BigRationalLibrary/1.0.0": {
+        "runtime": {
+          "lib/NETFramework40/BigRationalLibrary.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -247,6 +259,54 @@
           "lib/netstandard2.0/FsPickler.dll": {
             "assemblyVersion": "5.3.2.0",
             "fileVersion": "5.3.2.0"
+          }
+        }
+      },
+      "FSPowerPack.Community/3.0.0": {
+        "dependencies": {
+          "FSPowerPack.Linq.Community": "3.0.0",
+          "FSPowerPack.Metadata.Community": "2.0.0",
+          "FSPowerPack.Parallel.Seq.Community": "2.0.0"
+        }
+      },
+      "FSPowerPack.Core.Community/3.0.0": {
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.dll": {
+            "assemblyVersion": "4.0.0.1",
+            "fileVersion": "4.0.0.1"
+          }
+        }
+      },
+      "FSPowerPack.Linq.Community/3.0.0": {
+        "dependencies": {
+          "FSPowerPack.Core.Community": "3.0.0"
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.Linq.dll": {
+            "assemblyVersion": "4.0.0.1",
+            "fileVersion": "4.0.0.1"
+          }
+        }
+      },
+      "FSPowerPack.Metadata.Community/2.0.0": {
+        "dependencies": {
+          "FSPowerPack.Core.Community": "3.0.0"
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.Metadata.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "FSPowerPack.Parallel.Seq.Community/2.0.0": {
+        "dependencies": {
+          "FSPowerPack.Core.Community": "3.0.0"
+        },
+        "runtime": {
+          "Lib/Net40/FSharp.PowerPack.Parallel.Seq.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
           }
         }
       },
@@ -1312,6 +1372,13 @@
       "path": "akka.remote/1.4.10",
       "hashPath": "akka.remote.1.4.10.nupkg.sha512"
     },
+    "BigRationalLibrary/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-081lH0TQsLFKxrnKCkxkkShTFbOL3YcWYMEftBu2vMZuw63yBQeo1z4DhxyGUfJ59KSD4IA9M277SNIsjZXZCw==",
+      "path": "bigrationallibrary/1.0.0",
+      "hashPath": "bigrationallibrary.1.0.0.nupkg.sha512"
+    },
     "DotNetty.Buffers/0.6.0": {
       "type": "package",
       "serviceable": true,
@@ -1367,6 +1434,41 @@
       "sha512": "sha512-LFtxXpQNor8az1ez3rN9oz2cqf/06i9yTrPyJ9R83qLEpFAU7Of0WL2hoSXzLHer4lh+6mO1NV4VQFiBzNRtjw==",
       "path": "fspickler/5.3.2",
       "hashPath": "fspickler.5.3.2.nupkg.sha512"
+    },
+    "FSPowerPack.Community/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tkBrn/2KDqn1FvLjmrchsu75+iztqxW9I1kg7g4Wyy+7maHQEU9gJPRoPal3zL8w6hfkTWmMUcjqQiBLbPIcdQ==",
+      "path": "fspowerpack.community/3.0.0",
+      "hashPath": "fspowerpack.community.3.0.0.nupkg.sha512"
+    },
+    "FSPowerPack.Core.Community/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-x5jhAZY0HwTB1/MAfWcfRbroKjoHgyjRpjjx2VEZwzvcQLK2MAq/me8o2xux2+Gqac9T8MidzkYpUpIYIgp+5Q==",
+      "path": "fspowerpack.core.community/3.0.0",
+      "hashPath": "fspowerpack.core.community.3.0.0.nupkg.sha512"
+    },
+    "FSPowerPack.Linq.Community/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-v6tN7v74Gu3+Md3n6VVKL/JJa1+jny9/oQplhzwKPfZtMjAeCwGeSkDTspmIu9hECOI/j7I9rdr3naoCg8iEZw==",
+      "path": "fspowerpack.linq.community/3.0.0",
+      "hashPath": "fspowerpack.linq.community.3.0.0.nupkg.sha512"
+    },
+    "FSPowerPack.Metadata.Community/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3HCl+b+UQ7dcpBLxm4eaCTxKdW2j5zflCv2pNvX8SNjwniHoxcNMm7F7x+RRULFTRi5E5+9UwCTZ7YlbJ3M7Jg==",
+      "path": "fspowerpack.metadata.community/2.0.0",
+      "hashPath": "fspowerpack.metadata.community.2.0.0.nupkg.sha512"
+    },
+    "FSPowerPack.Parallel.Seq.Community/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-63AchEx0X39linzcydLfVFHE3b9wwH0lUwGPsl9R+lK6a48Y2+X2LS79RdCKD12WvNUCSVXZFUmkFq0I6KuSgA==",
+      "path": "fspowerpack.parallel.seq.community/2.0.0",
+      "hashPath": "fspowerpack.parallel.seq.community.2.0.0.nupkg.sha512"
     },
     "Google.Protobuf/3.13.0": {
       "type": "package",

@@ -57,3 +57,8 @@ C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netc
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.dll
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.pdb
 C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\obj\Debug\netcoreapp3.1\Gossip.genruntimeconfig.cache
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\BigRationalLibrary.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\FSharp.PowerPack.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\FSharp.PowerPack.Linq.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\FSharp.PowerPack.Metadata.dll
+C:\Users\moham\Documents\GitHub\Asynchronous-Gossip\Gossip\Gossip\bin\Debug\netcoreapp3.1\FSharp.PowerPack.Parallel.Seq.dll

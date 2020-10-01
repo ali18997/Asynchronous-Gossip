@@ -5,13 +5,14 @@ open System
 open System.Diagnostics
 open Akka.Actor
 
+
 //Create System reference
 let system = System.create "system" <| Configuration.defaultConfig()
 
 type Message() = 
     [<DefaultValue>] val mutable num: int
-    [<DefaultValue>] val mutable s: bigint
-    [<DefaultValue>] val mutable w: bigint
+    [<DefaultValue>] val mutable s: BigRational
+    [<DefaultValue>] val mutable w: BigRational
 
 //CONTROL VARIABLES
 
@@ -23,7 +24,7 @@ let mutable numNodes = 0
 //CHANGE HERE DIRECTLY
 let printFlag = true
 let thresholdGossip = 10
-let thresholdPushSum = bigint 10**10
+let thresholdPushSum = BigRational.FromInt(1)/BigRational.FromBigInt(bigint 10**10)
 
 
 let mutable arrayActor : IActorRef array = null
@@ -117,24 +118,25 @@ let getNeighbourUnique num =
 //Actor
 let actor (actorMailbox:Actor<Message>) = 
     let mutable count = 0
-    let mutable s = bigint -1
-    let mutable w = bigint 1
-    let mutable ratio1 = bigint 0
-    let mutable ratio2 = bigint 0
-    let mutable ratio3 = bigint 0
+    let mutable s = BigRational.FromInt(-1)
+    let mutable w = BigRational.FromInt(1)
+    let mutable ratio1 = BigRational.FromInt(0)
+    let mutable ratio2 = BigRational.FromInt(0)
+    let mutable ratio3 = BigRational.FromInt(0)
 
     //GOSSIP ALGORITHM
     let gossip num next =
         if count < thresholdGossip then
-            sendMessage next (bigint 0) (bigint 0)
+            sendMessage next (BigRational.FromInt(0)) (BigRational.FromInt(0))
         else
             stopTime num
             killActor num
 
     //PUSH-SUM ALGORITHM
     let pushSum next num ms mw =
-        if s = bigint -1 then
-            s <- num
+        if s = BigRational.FromInt(-1) then
+            s <- BigRational.FromInt(num)
+
         s <- s + ms
         w <- w + mw
    
@@ -142,12 +144,12 @@ let actor (actorMailbox:Actor<Message>) =
         ratio2 <- ratio3
         ratio3 <- s/w
 
-        if ratio3 - ratio1 < thresholdPushSum && count > 3 then
+        if abs(ratio3 - ratio1) < thresholdPushSum && count > 3 then
             stopTime num
             killActor num
 
         else 
-            sendMessage next (s/bigint 2) (w/bigint 2)
+            sendMessage next (s/ BigRational.FromInt(2)) (w/ BigRational.FromInt(2))
 
     //RUN ALGORITHM
     let runAlgo msg =
@@ -160,10 +162,10 @@ let actor (actorMailbox:Actor<Message>) =
         let next = getNeighbour msg.num
 
         if algorithm = "gossip" then
-            gossip (bigint msg.num) next 
+            gossip msg.num next 
 
         elif algorithm = "push-sum" then  
-            pushSum next (bigint msg.num) msg.s msg.w
+            pushSum next msg.num msg.s msg.w
 
 
     //Actor Loop that will process a message on each iteration
@@ -207,7 +209,7 @@ let main(args) =
     
     timer.Start()
 
-    sendMessage 0 (bigint 0) (bigint 0)
+    sendMessage 0 (BigRational.FromInt(0)) (BigRational.FromInt(0))
 
     //Keep the console open by making it wait for key press
     System.Console.ReadKey() |> ignore

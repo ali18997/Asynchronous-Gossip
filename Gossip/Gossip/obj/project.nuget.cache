@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "gAGiJ+JgjnKYLT33nF4ThwYUxW4ah0ymkTls9qt9LBNm7rfbGnRdsGwQ9Y2tEmoH66SSUgpZyGvZgYCb7u1MFQ==",
+  "dgSpecHash": "cA7elT7JNvn2PBizDR8b5I3Bmr3ZEsEv6vs0shl7/2btdflIcpzt8ZO2E4WqGfBBBtuHNNagjrR0ioFp32z2Tg==",
   "success": true,
   "projectFilePath": "C:\\Users\\moham\\Documents\\GitHub\\Asynchronous-Gossip\\Gossip\\Gossip\\Gossip.fsproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\moham\\.nuget\\packages\\akka.fsharp\\1.4.10\\akka.fsharp.1.4.10.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\akka.persistence\\1.4.10\\akka.persistence.1.4.10.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\akka.remote\\1.4.10\\akka.remote.1.4.10.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\bigrationallibrary\\1.0.0\\bigrationallibrary.1.0.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\dotnetty.buffers\\0.6.0\\dotnetty.buffers.0.6.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\dotnetty.codecs\\0.6.0\\dotnetty.codecs.0.6.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\dotnetty.common\\0.6.0\\dotnetty.common.0.6.0.nupkg.sha512",
@@ -18,6 +19,11 @@
     "C:\\Users\\moham\\.nuget\\packages\\fsharp.core\\4.7.2\\fsharp.core.4.7.2.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\fsharp.quotations.evaluator\\1.1.3\\fsharp.quotations.evaluator.1.1.3.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\fspickler\\5.3.2\\fspickler.5.3.2.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\fspowerpack.community\\3.0.0\\fspowerpack.community.3.0.0.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\fspowerpack.core.community\\3.0.0\\fspowerpack.core.community.3.0.0.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\fspowerpack.linq.community\\3.0.0\\fspowerpack.linq.community.3.0.0.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\fspowerpack.metadata.community\\2.0.0\\fspowerpack.metadata.community.2.0.0.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\fspowerpack.parallel.seq.community\\2.0.0\\fspowerpack.parallel.seq.community.2.0.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\google.protobuf\\3.13.0\\google.protobuf.3.13.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\1.1.0\\microsoft.extensions.dependencyinjection.abstractions.1.1.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\microsoft.extensions.dependencymodel\\3.1.6\\microsoft.extensions.dependencymodel.3.1.6.nupkg.sha512",
@@ -123,5 +129,96 @@
     "C:\\Users\\moham\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "FSPowerPack.Community 3.0.0 does not provide an inclusive lower bound for dependency FSPowerPack.Metadata.Community. An approximate best match of FSPowerPack.Metadata.Community 2.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Metadata.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "FSPowerPack.Community 3.0.0 does not provide an inclusive lower bound for dependency FSPowerPack.Parallel.Seq.Community. An approximate best match of FSPowerPack.Parallel.Seq.Community 2.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Parallel.Seq.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Metadata.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Core.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Parallel.Seq.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "libraryId": "FSPowerPack.Core.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'BigRationalLibrary 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "BigRationalLibrary",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Core.Community 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Core.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Linq.Community 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Linq.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Metadata.Community 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Metadata.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FSPowerPack.Parallel.Seq.Community 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FSPowerPack.Parallel.Seq.Community",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }
