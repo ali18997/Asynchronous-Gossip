@@ -105,6 +105,12 @@ let getNeighbour currentNum =
     else
        0
 
+let getNeighbourUnique num = 
+    let mutable next = getNeighbour num
+    while next = num do
+        next <- getNeighbour num
+    next
+
 //Actor
 let actor (actorMailbox:Actor<Message>) = 
     let mutable count = 0
@@ -144,15 +150,17 @@ let actor (actorMailbox:Actor<Message>) =
     let runAlgo msg =
         let m:Message = msg
 
+        printfn "ACTOR %A RECEIVED MSG" msg.num
+
         count <- count + 1
         
-        let next = getNeighbour (int m.num)
+        let next = getNeighbour msg.num
 
         if algorithm = "gossip" && stopFlag then
-            gossip m.num next 
+            gossip msg.num next 
 
         elif algorithm = "push-sum" && stopFlag then  
-            pushSum next (bigint m.num) m.s m.w
+            pushSum next (bigint msg.num) msg.s msg.w
 
 
     //Actor Loop that will process a message on each iteration
@@ -160,7 +168,6 @@ let actor (actorMailbox:Actor<Message>) =
 
         //Receive the message
         let! msg = actorMailbox.Receive()
-        printfn "ACTOR %A RECEIVED MSG" msg.num
         
         runAlgo msg
             
@@ -196,6 +203,7 @@ let main(args) =
     makeActors true
     
     timer.Start()
+
     sendMessage 0 (bigint 0) (bigint 0)
 
     //Keep the console open by making it wait for key press
