@@ -24,7 +24,7 @@ let mutable numNodes = 0
 //CHANGE HERE DIRECTLY
 let printFlag = true
 let thresholdGossip = 10
-let thresholdPushSum = BigRational.FromInt(1)/BigRational.FromBigInt(bigint 10**10)
+let thresholdPushSum = BigRational.FromInt(1)/BigRational.FromBigInt(bigint 10**10) // 10 ^ -10
 
 
 let mutable arrayActor : IActorRef array = null
@@ -34,7 +34,7 @@ let timer = new Stopwatch()
 
 let stopTime num = 
     let realTime = timer.ElapsedMilliseconds
-    printfn "ACTOR %A WILL NO LONGER SEND" num   
+    //printfn "ACTOR %A WILL NO LONGER SEND" num   
     printfn "TIME: %dms" realTime
 
 let perfectSquare n =
@@ -155,7 +155,7 @@ let actor (actorMailbox:Actor<Message>) =
     let runAlgo msg =
         let m:Message = msg
 
-        printfn "ACTOR %A RECEIVED MSG" msg.num
+        //printfn "ACTOR %A RECEIVED MSG" msg.num
 
         count <- count + 1
         
