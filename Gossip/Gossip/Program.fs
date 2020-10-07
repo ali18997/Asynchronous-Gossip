@@ -11,8 +11,8 @@ let system = System.create "system" <| Configuration.defaultConfig()
 
 type Message() = 
     [<DefaultValue>] val mutable num: int
-    [<DefaultValue>] val mutable s: BigRational
-    [<DefaultValue>] val mutable w: BigRational
+    [<DefaultValue>] val mutable s: double
+    [<DefaultValue>] val mutable w: double
 
 //CONTROL VARIABLES
 
@@ -24,7 +24,7 @@ let mutable numNodes = 0
 //CHANGE HERE DIRECTLY
 let printFlag = true
 let thresholdGossip = 10
-let thresholdPushSum = BigRational.FromInt(1)/BigRational.FromBigInt(bigint 10**10) // 10 ^ -10
+let thresholdPushSum = (double 1)/(double 10** double 10) // 10 ^ -10
 
 
 let mutable arrayActor : IActorRef array = null
@@ -110,7 +110,7 @@ let getNeighbour currentNum =
     else
        0
 
-let getNeighbourConverged num = 
+let getNeighbourAny num = 
  
     let objrandom = new Random()
     let mutable next = objrandom.Next(0,numNodes)
@@ -127,7 +127,7 @@ let getNeighbourUnique num =
     if count < 500 then
         next
     else      
-        getNeighbourConverged num
+        getNeighbourAny num
 
 
 
@@ -136,34 +136,34 @@ let getNeighbourUnique num =
 //Actor
 let actor (actorMailbox:Actor<Message>) = 
     let mutable count = 0
-    let mutable s = BigRational.FromInt(-1)
-    let mutable w = BigRational.FromInt(1)
-    let mutable ratio1 = BigRational.FromInt(0)
-    let mutable ratio2 = BigRational.FromInt(0)
-    let mutable ratio3 = BigRational.FromInt(0)
+    let mutable s = double -1
+    let mutable w = double 1
+    let mutable ratio1 = double 0
+    let mutable ratio2 = double 0
+    let mutable ratio3 = double 0
 
     //GOSSIP ALGORITHM
     let gossip num  =
         if count < thresholdGossip then
             let next = getNeighbourUnique num
-            sendMessage next (BigRational.FromInt(0)) (BigRational.FromInt(0))
+            sendMessage next (double 0) (double 0)
         else
             arrayActive.[num] <- false
             activeCount <- activeCount - 1
             //printfn "ACTOR %A WILL NO LONGER SEND" num
             if activeCount = 1 then
-                printfn "Converged"
+                printfn "All Nodes Converged"
                 stopTime num
             else
                 let next = getNeighbourUnique num
-                sendMessage next (BigRational.FromInt(0)) (BigRational.FromInt(0))
+                sendMessage next (double 0) (double 0)
             killActor num
 
 
     //PUSH-SUM ALGORITHM
     let pushSum num ms mw =
-        if s = BigRational.FromInt(-1) then
-            s <- BigRational.FromInt(num)
+        if s = (double -1) then
+            s <- double num
 
         s <- s + ms
         w <- w + mw
@@ -181,11 +181,11 @@ let actor (actorMailbox:Actor<Message>) =
                 stopTime num
             else
                 let next = getNeighbourUnique num
-                sendMessage next (s/ BigRational.FromInt(2)) (w/ BigRational.FromInt(2))
+                sendMessage next (s/ (double 2)) (w/ (double 2))
             killActor num
         else 
             let next = getNeighbourUnique num
-            sendMessage next (s/ BigRational.FromInt(2)) (w/ BigRational.FromInt(2))
+            sendMessage next (s/ double 2) (w/ double 2)
 
     //RUN ALGORITHM
     let runAlgo msg =
@@ -246,7 +246,7 @@ let main(args) =
     
     timer.Start()
 
-    sendMessage 0 (BigRational.FromInt(0)) (BigRational.FromInt(0))
+    sendMessage 0 (double 0) (double 0)
 
     //Keep the console open by making it wait for key press
     System.Console.ReadKey() |> ignore
