@@ -154,7 +154,7 @@
       "code": "NU1608",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: FSPowerPack.Metadata.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Parallel.Seq.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
       "libraryId": "FSPowerPack.Core.Community",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
@@ -164,7 +164,7 @@
       "code": "NU1608",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: FSPowerPack.Parallel.Seq.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Metadata.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
       "libraryId": "FSPowerPack.Core.Community",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
