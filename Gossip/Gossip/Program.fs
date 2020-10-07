@@ -28,13 +28,14 @@ let thresholdPushSum = BigRational.FromInt(1)/BigRational.FromBigInt(bigint 10**
 
 
 let mutable arrayActor : IActorRef array = null
+let mutable arrayActive : bool array = null
+let mutable activeCount = 0
 
 
 let timer = new Stopwatch()
 
 let stopTime num = 
     let realTime = timer.ElapsedMilliseconds
-    //printfn "ACTOR %A WILL NO LONGER SEND" num   
     printfn "TIME: %dms" realTime
 
 let perfectSquare n =
@@ -109,11 +110,28 @@ let getNeighbour currentNum =
     else
        0
 
+let getNeighbourConverged num = 
+ 
+    let objrandom = new Random()
+    let mutable next = objrandom.Next(0,numNodes)
+    while (next = num || arrayActive.[next] = false) do
+        next <- objrandom.Next(0,numNodes)
+    next
+
 let getNeighbourUnique num = 
     let mutable next = getNeighbour num
-    while next = num do
+    let mutable count = 0
+    while ((next = num || arrayActive.[next] = false) && count < 500) do
         next <- getNeighbour num
-    next
+        count <- count + 1
+    if count < 500 then
+        next
+    else      
+        getNeighbourConverged num
+
+
+
+
 
 //Actor
 let actor (actorMailbox:Actor<Message>) = 
@@ -125,15 +143,25 @@ let actor (actorMailbox:Actor<Message>) =
     let mutable ratio3 = BigRational.FromInt(0)
 
     //GOSSIP ALGORITHM
-    let gossip num next =
+    let gossip num  =
         if count < thresholdGossip then
+            let next = getNeighbourUnique num
             sendMessage next (BigRational.FromInt(0)) (BigRational.FromInt(0))
         else
-            stopTime num
+            arrayActive.[num] <- false
+            activeCount <- activeCount - 1
+            //printfn "ACTOR %A WILL NO LONGER SEND" num
+            if activeCount = 1 then
+                printfn "Converged"
+                stopTime num
+            else
+                let next = getNeighbourUnique num
+                sendMessage next (BigRational.FromInt(0)) (BigRational.FromInt(0))
             killActor num
 
+
     //PUSH-SUM ALGORITHM
-    let pushSum next num ms mw =
+    let pushSum num ms mw =
         if s = BigRational.FromInt(-1) then
             s <- BigRational.FromInt(num)
 
@@ -145,10 +173,18 @@ let actor (actorMailbox:Actor<Message>) =
         ratio3 <- s/w
 
         if abs(ratio3 - ratio1) < thresholdPushSum && count > 3 then
-            stopTime num
+            arrayActive.[num] <- false
+            activeCount <- activeCount - 1
+            //printfn "ACTOR %A WILL NO LONGER SEND" num   
+            if activeCount = 1 then
+                printfn "Converged"
+                stopTime num
+            else
+                let next = getNeighbourUnique num
+                sendMessage next (s/ BigRational.FromInt(2)) (w/ BigRational.FromInt(2))
             killActor num
-
         else 
+            let next = getNeighbourUnique num
             sendMessage next (s/ BigRational.FromInt(2)) (w/ BigRational.FromInt(2))
 
     //RUN ALGORITHM
@@ -156,16 +192,15 @@ let actor (actorMailbox:Actor<Message>) =
         let m:Message = msg
 
         //printfn "ACTOR %A RECEIVED MSG" msg.num
-
+        if count = 0 then
+            activeCount <- activeCount + 1
         count <- count + 1
-        
-        let next = getNeighbour msg.num
 
         if algorithm = "gossip" then
-            gossip msg.num next 
+            gossip msg.num 
 
         elif algorithm = "push-sum" then  
-            pushSum next msg.num msg.s msg.w
+            pushSum msg.num msg.s msg.w
 
 
     //Actor Loop that will process a message on each iteration
@@ -190,10 +225,12 @@ let makeActors start =
             numNodes <- numNodes + 1
 
     arrayActor <- Array.zeroCreate numNodes
+    arrayActive <- Array.zeroCreate numNodes
 
     for i = 0 to numNodes-1 do
         let name:string = "actor" + i.ToString() 
         arrayActor.[i] <- spawn system name actor 
+        arrayActive.[i] <- true
 
 
 [<EntryPoint>]

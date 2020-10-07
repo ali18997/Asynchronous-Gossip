@@ -2,7 +2,7 @@
   "profiles": {
     "Gossip": {
       "commandName": "Project",
-      "commandLineArgs": "500 2D push-sum"
+      "commandLineArgs": "1000 full gossip"
     }
   }
 }
