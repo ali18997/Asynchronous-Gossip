@@ -117,8 +117,6 @@ let child (mailbox: Actor<_>) =
                 if(msgCount=10) then 
                     availableActors <- Set.remove childNumber availableActors
                     bossRef<!Done(true)
-                else
-                    availableActors <- Set.add childNumber availableActors
 
         return! loop()
     }
