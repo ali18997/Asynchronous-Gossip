@@ -115,6 +115,7 @@ let child (mailbox: Actor<_>) =
                     childRefs.Item(randomActorIndex)<!Ping(randomActor)
 
                 if(msgCount=10) then 
+                    availableActors <- Set.remove childNumber availableActors
                     bossRef<!Done(true)
                 else
                     availableActors <- Set.add childNumber availableActors
@@ -181,5 +182,5 @@ let parent (mailbox: Actor<_>) =
 // let third = args.[2]|> string
 
 let parentActor = spawn system "parent" parent
-parentActor <! IntializeParent(1000,"Full","Gossip",parentActor)
+parentActor <! IntializeParent(1000,"imp","Gossip",parentActor)
 
