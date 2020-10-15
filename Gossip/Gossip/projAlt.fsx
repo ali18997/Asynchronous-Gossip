@@ -29,6 +29,12 @@ type ProcessorMessage =
     | StartPushSum of bool
     | Pong of int*double*double
 
+let timer = new Stopwatch()
+
+let stopTime num = 
+    let realTime = timer.ElapsedMilliseconds
+    printfn "TIME: %dms" realTime
+
 let getRandArrElement =
   let rnd = Random()
   fun (arr : int list) -> arr.[rnd.Next(arr.Length)]
@@ -105,8 +111,10 @@ let child (mailbox: Actor<_>) =
             childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
 
         | Ping(childNumber) ->
-            if (msgCount<10)
+           // printfn "childNumber=%i msgCount=%i" childNumber msgCount
+            if(msgCount<10) then
                 msgCount <- msgCount + 1
+                //printfn "msgCount=%i" msgCount
 
                 if(Set.count availableActors=1) then
                     availableActors <- Set.remove childNumber availableActors
@@ -123,9 +131,33 @@ let child (mailbox: Actor<_>) =
                         let randomActorIndex = randomActor-1
                         childRefs.Item(randomActorIndex)<!Ping(randomActor)
 
-                    if(msgCount=10) then 
-                        availableActors <- Set.remove childNumber availableActors
-                        bossRef<!Done(true)
+                    // if(msgCount=10) then 
+                    //     availableActors <- Set.remove childNumber availableActors
+                    //     bossRef<!Done(true)
+            else
+                availableActors <- Set.remove childNumber availableActors
+                //printfn "Available set %A" availableActors
+
+                if(Set.isEmpty availableActors) then
+                    bossRef<!Done(true)
+                else
+                    let randomNeighbour = getRandArrElement childNeighbours
+                    if(Set.contains randomNeighbour availableActors) then
+                        let randomNeighbourIndex = randomNeighbour-1
+                        childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
+                    else
+                        let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                        // while(randomActor=childNumber) do
+                        //     randomActor <- getRandArrElement (Set.toList availableActors)
+                        let randomActorIndex = randomActor-1
+                        childRefs.Item(randomActorIndex)<!Ping(randomActor)
+                    
+                    bossRef<!Done(true)
+
+                // if(Set.contains childNumber availableActors) then
+                //     availableActors <- Set.remove childNumber availableActors
+                //     bossRef<!Done(true)
+                //bossRef<!Done(true)
 
         | StartPushSum(b) ->
             let randomNeighbour = getRandArrElement childNeighbours
@@ -161,7 +193,7 @@ let child (mailbox: Actor<_>) =
                 childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
 
                 if(count=3) then 
-                    printfn "ratio is %f" (s/w)  
+                    //printfn "ratio is %f" (s/w)  
                     availableActors <- Set.remove childNumber availableActors
                     bossRef<!Done(true)
 
@@ -195,7 +227,8 @@ let parent (mailbox: Actor<_>) =
 
             for i=0 to childRefList.Length-1 do
                 childRefList.Item(i)<!ReferenceList(childRefList)
-
+            
+            timer.Start()
             if(algorithm="Gossip") then
                 childRefList.Item(0)<!StartGossip(true)
             else
@@ -207,9 +240,11 @@ let parent (mailbox: Actor<_>) =
            // printfn "%b" (Set.isEmpty availableActors)
             
             if(completedActors=nodes) then 
-                printfn ""
+                //printfn ""
+                
+                printfn "All Nodes Converged"
+                stopTime 1
                 printfn "Press Any Key To Close"
-
                 //Close all actors
                 system.Terminate() |> ignore
         return! loop()
@@ -218,13 +253,15 @@ let parent (mailbox: Actor<_>) =
 
 
 
-// let args : string array = fsi.CommandLineArgs |> Array.tail
+let args : string array = fsi.CommandLineArgs |> Array.tail
 
-// //Extract and convert to Int
-// let first = args.[0]|> int
-// let second = args.[1]|> string
-// let third = args.[2]|> string
+//Extract and convert to Int
+let first = args.[0]|> int
+let second = args.[1]|> string
+let third = args.[2]|> string
+
 
 let parentActor = spawn system "parent" parent
-parentActor <! IntializeParent(1000,"Line","Gossip",parentActor)
+parentActor <! IntializeParent(first,second,third,parentActor)
 
+System.Console.ReadKey() |> ignore
