@@ -21,11 +21,13 @@ let system = System.create "system" <| Configuration.load ()
 
 type ProcessorMessage = 
     | IntializeParent of int*string*string*IActorRef
-    | IntializeChild of int list*IActorRef
+    | IntializeChild of int*(int list)*IActorRef
     | StartGossip of bool
     | ReferenceList of IActorRef list
     | Ping of int
     | Done of bool
+    | StartPushSum of bool
+    | Pong of int*double*double
 
 let getRandArrElement =
   let rnd = Random()
@@ -77,13 +79,21 @@ let child (mailbox: Actor<_>) =
     let mutable msgCount = 0
     let mutable childRefs = List.empty
     let mutable bossRef = null
+
+    //push sum
+
+    let mutable s:double = 0.0
+    let mutable w:double = 0.0
+    let mutable count = 0
+
     let rec loop () = actor {
         let! message = mailbox.Receive ()
         match message with
-        | IntializeChild(neighbours,pRef) -> 
+        | IntializeChild(childNo,neighbours,pRef) -> 
             childNeighbours <- childNeighbours @ neighbours
-            //printfn "%A" childNeighbours 
             bossRef <- pRef
+            s <- double childNo
+            w <- 1.0  
 
         | ReferenceList(childRefList) ->
             childRefs <- childRefs @ childRefList
@@ -96,11 +106,9 @@ let child (mailbox: Actor<_>) =
 
         | Ping(childNumber) ->
             msgCount <- msgCount + 1
-            //printfn "%i xxxx" childNumber
-
-            //availableActors <- Set.remove childNumber availableActors
 
             if(Set.count availableActors=1) then
+                availableActors <- Set.remove childNumber availableActors
                 bossRef<!Done(true)
             else 
                 let randomNeighbour = getRandArrElement childNeighbours
@@ -115,6 +123,44 @@ let child (mailbox: Actor<_>) =
                     childRefs.Item(randomActorIndex)<!Ping(randomActor)
 
                 if(msgCount=10) then 
+                    availableActors <- Set.remove childNumber availableActors
+                    bossRef<!Done(true)
+
+        | StartPushSum(b) ->
+            let randomNeighbour = getRandArrElement childNeighbours
+            let randomNeighbourIndex = randomNeighbour-1
+            s <- s/2.0
+            w <- w/2.0
+            childRefs.Item(randomNeighbourIndex)<!Pong(randomNeighbour,s,w)
+
+        | Pong(childNumber,recS,recW) ->
+            let newS = s + recS
+            let newW = w + recW
+
+            if(Math.Abs ((newS/newW)-(s/w))<0.0000000001) then 
+                count <- count + 1
+            else
+                count <- 0
+            // printfn "Old ratio = %e" (s/w)
+            // printfn "New ratio = %e" (newS/newW)
+            // printfn "Difference = %e" (Math.Abs ((newS/newW)-(s/w)))
+            s <- newS
+            w <- newW
+
+            if(Set.count availableActors=1) then
+                availableActors <- Set.remove childNumber availableActors
+                bossRef<!Done(true)
+            else
+                let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                while(randomActor=childNumber) do
+                    randomActor <- getRandArrElement (Set.toList availableActors)
+                let randomActorIndex = randomActor-1
+                s<-s/2.0
+                w<-w/2.0
+                childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+
+                if(count=3) then 
+                    printfn "ratio is %f" (s/w)  
                     availableActors <- Set.remove childNumber availableActors
                     bossRef<!Done(true)
 
@@ -138,34 +184,33 @@ let parent (mailbox: Actor<_>) =
             topology <- y
             algorithm <- z
             parentRef <- p
-
             availableActors <- Set.ofSeq [1..nodes]
-
             for i=1 to nodes do
                 let neighbours = getNeighbours topology i nodes
-                //printfn "%i -- %A" i neighbours
                 let name = i.ToString()
                 let childref = spawn system name child
                 childRefList <- childRefList @ [childref]
-                childref<!IntializeChild(neighbours,parentRef)
+                childref<!IntializeChild(i+1,neighbours,parentRef)
 
             for i=0 to childRefList.Length-1 do
                 childRefList.Item(i)<!ReferenceList(childRefList)
-            
-            childRefList.Item(0)<!StartGossip(true)
 
+            if(algorithm="Gossip") then
+                childRefList.Item(0)<!StartGossip(true)
+            else
+                childRefList.Item(0)<!StartPushSum(true)
         | Done(x) ->
             completedActors<-completedActors+1
             //let i = Set.count availableActors
             printfn "%i" completedActors
            // printfn "%b" (Set.isEmpty availableActors)
             
-        if(completedActors=nodes) then 
-            printfn ""
-            printfn "Press Any Key To Close"
+            if(completedActors=nodes) then 
+                printfn ""
+                printfn "Press Any Key To Close"
 
-            //Close all actors
-            system.Terminate() |> ignore
+                //Close all actors
+                system.Terminate() |> ignore
         return! loop()
     }
     loop()
@@ -180,5 +225,5 @@ let parent (mailbox: Actor<_>) =
 // let third = args.[2]|> string
 
 let parentActor = spawn system "parent" parent
-parentActor <! IntializeParent(1000,"imp","Gossip",parentActor)
+parentActor <! IntializeParent(1000,"Line","Push",parentActor)
 
