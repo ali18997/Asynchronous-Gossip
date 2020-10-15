@@ -190,10 +190,14 @@ let actor (actorMailbox:Actor<Message>) =
             else
                 let next = getNeighbourUnique num
                 sendMessage next (s/ (double 2)) (w/ (double 2))
+                s <- s/ double 2
+                w <- w/ double 2
             killActor num
         else 
             let next = getNeighbourUnique num
             sendMessage next (s/ double 2) (w/ double 2)
+            s <- s/ double 2
+            w <- w/ double 2
 
     //RUN ALGORITHM
     let runAlgo msg =

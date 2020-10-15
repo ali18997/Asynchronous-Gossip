@@ -17,7 +17,7 @@ of nodes.
 3)What is the largest network you managed to deal with for each type of
 topology and algorithm
 
-push sum with network size 10000 for any topology and
+push sum with network size 1000 for any topology and
  gossip with network size 100000 for any topology. It will work beyond 
 this size as well but since it will take quite long, it was not tested beyond
 this limit.

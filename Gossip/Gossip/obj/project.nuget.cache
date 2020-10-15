@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cA7elT7JNvn2PBizDR8b5I3Bmr3ZEsEv6vs0shl7/2btdflIcpzt8ZO2E4WqGfBBBtuHNNagjrR0ioFp32z2Tg==",
+  "dgSpecHash": "/qKU4+1A3pahxYAtv5tFBt0EZCmOgby1b0CgTMPZaDLydiPDuqi4ux3N38BzcIoP3lvn/MGFrRAo5ZA56eSwMw==",
   "success": true,
   "projectFilePath": "C:\\Users\\moham\\Documents\\GitHub\\Asynchronous-Gossip\\Gossip\\Gossip\\Gossip.fsproj",
   "expectedPackageFiles": [
@@ -154,7 +154,7 @@
       "code": "NU1608",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: FSPowerPack.Parallel.Seq.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Metadata.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
       "libraryId": "FSPowerPack.Core.Community",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
@@ -164,7 +164,7 @@
       "code": "NU1608",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: FSPowerPack.Metadata.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
+      "message": "Detected package version outside of dependency constraint: FSPowerPack.Parallel.Seq.Community 2.0.0 requires FSPowerPack.Core.Community (>= 1.9.9.9 && < 2.9.9.9) but version FSPowerPack.Core.Community 3.0.0 was resolved.",
       "libraryId": "FSPowerPack.Core.Community",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
