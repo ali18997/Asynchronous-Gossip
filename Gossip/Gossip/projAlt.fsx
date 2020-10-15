@@ -78,7 +78,38 @@ let getNeighbours topology i size=
         let num = getRandArrElement s
         Set.toList neighBourSet @ [num]
 
+
+
+
 let mutable availableActors = Set.empty
+
+let checkAllNeighborsExhausted (neighboursList: int list) = 
+    let mutable count = 0
+    let mutable randomEle = getRandArrElement neighboursList
+    let mutable result = false
+    while(not result) do
+        if(not (Set.contains randomEle availableActors)) then
+            count <- count + 1
+        else 
+            result <- true
+        randomEle <- getRandArrElement neighboursList
+        if(count=500) then result<-true
+    result
+
+    // while(not result) do
+
+    
+    // while(not (Set.contains randomEle availableActors)) do
+    //     count <- count + 1
+    //     randomEle <- getRandArrElement neighboursList
+    //     if(count=50) then true
+    // false    
+    // for i=0 to 50 do
+    //     if(not (Set.contains (neighboursList.Item(i)) availableActors)) then
+    //         count <- count + 1
+    //     else
+    //         count <- count
+    // count=neighboursList.Length
 
 let child (mailbox: Actor<_>) = 
     let mutable childNeighbours = List.empty
@@ -97,6 +128,7 @@ let child (mailbox: Actor<_>) =
         match message with
         | IntializeChild(childNo,neighbours,pRef) -> 
             childNeighbours <- childNeighbours @ neighbours
+            //printfn "childno %i list %A" childNo childNeighbours
             bossRef <- pRef
             s <- double childNo
             w <- 1.0  
@@ -120,20 +152,20 @@ let child (mailbox: Actor<_>) =
                     availableActors <- Set.remove childNumber availableActors
                     bossRef<!Done(childNumber)
                 else 
-                    let randomNeighbour = getRandArrElement childNeighbours
-                    if(Set.contains randomNeighbour availableActors) then
-                        let randomNeighbourIndex = randomNeighbour-1
-                        childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
-                    else
+                    let checker = checkAllNeighborsExhausted childNeighbours
+                    
+                    if (checker) then
                         let mutable randomActor = getRandArrElement (Set.toList availableActors)
                         while(randomActor=childNumber) do
                             randomActor <- getRandArrElement (Set.toList availableActors)
                         let randomActorIndex = randomActor-1
                         childRefs.Item(randomActorIndex)<!Ping(randomActor)
-
-                    // if(msgCount=10) then 
-                    //     availableActors <- Set.remove childNumber availableActors
-                    //     bossRef<!Done(true)
+                    else
+                        let mutable randomNeighbour = getRandArrElement childNeighbours
+                        while(not (Set.contains randomNeighbour availableActors)) do
+                            randomNeighbour <- getRandArrElement childNeighbours
+                        let randomNeighbourIndex = randomNeighbour-1
+                        childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
             else
                 availableActors <- Set.remove childNumber availableActors
                 //printfn "Available set %A" availableActors
@@ -141,18 +173,21 @@ let child (mailbox: Actor<_>) =
                 if(Set.isEmpty availableActors) then
                     bossRef<!Done(childNumber)
                 else
-                    let randomNeighbour = getRandArrElement childNeighbours
-                    if(Set.contains randomNeighbour availableActors) then
-                        let randomNeighbourIndex = randomNeighbour-1
-                        childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
-                    else
+                    let checker = checkAllNeighborsExhausted childNeighbours
+                    
+                    if (checker) then
                         let mutable randomActor = getRandArrElement (Set.toList availableActors)
-                        // while(randomActor=childNumber) do
-                        //     randomActor <- getRandArrElement (Set.toList availableActors)
+                        while(randomActor=childNumber) do
+                            randomActor <- getRandArrElement (Set.toList availableActors)
                         let randomActorIndex = randomActor-1
                         childRefs.Item(randomActorIndex)<!Ping(randomActor)
-                    
-                        bossRef<!Done(childNumber)
+                    else
+                        let mutable randomNeighbour = getRandArrElement childNeighbours
+                        while(not (Set.contains randomNeighbour availableActors)) do
+                            randomNeighbour <- getRandArrElement childNeighbours
+                        let randomNeighbourIndex = randomNeighbour-1
+                        childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
+                    bossRef<!Done(childNumber)
 
                 // if(Set.contains childNumber availableActors) then
                 //     availableActors <- Set.remove childNumber availableActors
@@ -187,29 +222,62 @@ let child (mailbox: Actor<_>) =
                    // printfn "xxxx %i" childNumber
                     bossRef<!Done(childNumber)
                 else
-                    let mutable randomActor = getRandArrElement (Set.toList availableActors)
-                    while(randomActor=childNumber) do
-                        randomActor <- getRandArrElement (Set.toList availableActors)
-                    let randomActorIndex = randomActor-1
-                    s<-s/2.0
-                    w<-w/2.0
-                    childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+                    let checker = checkAllNeighborsExhausted childNeighbours
+                    
+                    if (checker) then
+                        let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                        while(randomActor=childNumber) do
+                            randomActor <- getRandArrElement (Set.toList availableActors)
+                        let randomActorIndex = randomActor-1
+                        s<-s/2.0
+                        w<-w/2.0
+                        childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+                    else
+                        let mutable randomNeighbour = getRandArrElement childNeighbours
+                        while(not (Set.contains randomNeighbour availableActors)) do
+                            randomNeighbour <- getRandArrElement childNeighbours
+                        let randomNeighbourIndex = randomNeighbour-1
+                        s<-s/2.0
+                        w<-w/2.0
+                        childRefs.Item(randomNeighbourIndex)<!Pong(randomNeighbour,s,w)
+
+
+                    // let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                    // while(randomActor=childNumber) do
+                    //     randomActor <- getRandArrElement (Set.toList availableActors)
+                    // let randomActorIndex = randomActor-1
+                    // s<-s/2.0
+                    // w<-w/2.0
+                    // childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
 
                 // if(count=3) then 
                 //     //printfn "ratio is %f" (s/w)  
                 //     availableActors <- Set.remove childNumber availableActors
                 //     bossRef<!Done(true)
             else 
-                //printfn "%f" (s/w)
+                printfn "childNo %i : Ratio %f" childNumber (s/w)
                 availableActors <- Set.remove childNumber availableActors
                 if(Set.isEmpty availableActors) then
                     bossRef<!Done(childNumber)
                 else
-                    let mutable randomActor = getRandArrElement (Set.toList availableActors)
-                    let randomActorIndex = randomActor-1
-                    s<-s/2.0
-                    w<-w/2.0
-                    childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+                    let checker = checkAllNeighborsExhausted childNeighbours
+                    
+                    if (checker) then
+                        let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                        while(randomActor=childNumber) do
+                            randomActor <- getRandArrElement (Set.toList availableActors)
+                        let randomActorIndex = randomActor-1
+                        s<-s/2.0
+                        w<-w/2.0
+                        childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+                    else
+                        let mutable randomNeighbour = getRandArrElement childNeighbours
+                        while(not (Set.contains randomNeighbour availableActors)) do
+                            randomNeighbour <- getRandArrElement childNeighbours
+                        let randomNeighbourIndex = randomNeighbour-1
+                        s<-s/2.0
+                        w<-w/2.0
+                        childRefs.Item(randomNeighbourIndex)<!Pong(randomNeighbour,s,w)
                     bossRef<!Done(childNumber)
 
         return! loop()
