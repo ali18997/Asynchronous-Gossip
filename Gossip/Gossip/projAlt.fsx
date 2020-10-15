@@ -105,26 +105,27 @@ let child (mailbox: Actor<_>) =
             childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
 
         | Ping(childNumber) ->
-            msgCount <- msgCount + 1
+            if (msgCount<10)
+                msgCount <- msgCount + 1
 
-            if(Set.count availableActors=1) then
-                availableActors <- Set.remove childNumber availableActors
-                bossRef<!Done(true)
-            else 
-                let randomNeighbour = getRandArrElement childNeighbours
-                if(Set.contains randomNeighbour availableActors) then
-                    let randomNeighbourIndex = randomNeighbour-1
-                    childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
-                else
-                    let mutable randomActor = getRandArrElement (Set.toList availableActors)
-                    while(randomActor=childNumber) do
-                        randomActor <- getRandArrElement (Set.toList availableActors)
-                    let randomActorIndex = randomActor-1
-                    childRefs.Item(randomActorIndex)<!Ping(randomActor)
-
-                if(msgCount=10) then 
+                if(Set.count availableActors=1) then
                     availableActors <- Set.remove childNumber availableActors
                     bossRef<!Done(true)
+                else 
+                    let randomNeighbour = getRandArrElement childNeighbours
+                    if(Set.contains randomNeighbour availableActors) then
+                        let randomNeighbourIndex = randomNeighbour-1
+                        childRefs.Item(randomNeighbourIndex)<!Ping(randomNeighbour)
+                    else
+                        let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                        while(randomActor=childNumber) do
+                            randomActor <- getRandArrElement (Set.toList availableActors)
+                        let randomActorIndex = randomActor-1
+                        childRefs.Item(randomActorIndex)<!Ping(randomActor)
+
+                    if(msgCount=10) then 
+                        availableActors <- Set.remove childNumber availableActors
+                        bossRef<!Done(true)
 
         | StartPushSum(b) ->
             let randomNeighbour = getRandArrElement childNeighbours
@@ -225,5 +226,5 @@ let parent (mailbox: Actor<_>) =
 // let third = args.[2]|> string
 
 let parentActor = spawn system "parent" parent
-parentActor <! IntializeParent(1000,"Line","Push",parentActor)
+parentActor <! IntializeParent(1000,"Line","Gossip",parentActor)
 
