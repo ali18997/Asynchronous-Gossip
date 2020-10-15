@@ -25,7 +25,7 @@ type ProcessorMessage =
     | StartGossip of bool
     | ReferenceList of IActorRef list
     | Ping of int
-    | Done of bool
+    | Done of int
     | StartPushSum of bool
     | Pong of int*double*double
 
@@ -118,7 +118,7 @@ let child (mailbox: Actor<_>) =
 
                 if(Set.count availableActors=1) then
                     availableActors <- Set.remove childNumber availableActors
-                    bossRef<!Done(true)
+                    bossRef<!Done(childNumber)
                 else 
                     let randomNeighbour = getRandArrElement childNeighbours
                     if(Set.contains randomNeighbour availableActors) then
@@ -139,7 +139,7 @@ let child (mailbox: Actor<_>) =
                 //printfn "Available set %A" availableActors
 
                 if(Set.isEmpty availableActors) then
-                    bossRef<!Done(true)
+                    bossRef<!Done(childNumber)
                 else
                     let randomNeighbour = getRandArrElement childNeighbours
                     if(Set.contains randomNeighbour availableActors) then
@@ -152,7 +152,7 @@ let child (mailbox: Actor<_>) =
                         let randomActorIndex = randomActor-1
                         childRefs.Item(randomActorIndex)<!Ping(randomActor)
                     
-                    bossRef<!Done(true)
+                        bossRef<!Done(childNumber)
 
                 // if(Set.contains childNumber availableActors) then
                 //     availableActors <- Set.remove childNumber availableActors
@@ -167,35 +167,50 @@ let child (mailbox: Actor<_>) =
             childRefs.Item(randomNeighbourIndex)<!Pong(randomNeighbour,s,w)
 
         | Pong(childNumber,recS,recW) ->
-            let newS = s + recS
-            let newW = w + recW
 
-            if(Math.Abs ((newS/newW)-(s/w))<0.0000000001) then 
-                count <- count + 1
-            else
-                count <- 0
-            // printfn "Old ratio = %e" (s/w)
-            // printfn "New ratio = %e" (newS/newW)
-            // printfn "Difference = %e" (Math.Abs ((newS/newW)-(s/w)))
-            s <- newS
-            w <- newW
+            if(count<3) then
+                let newS = s + recS
+                let newW = w + recW
 
-            if(Set.count availableActors=1) then
-                availableActors <- Set.remove childNumber availableActors
-                bossRef<!Done(true)
-            else
-                let mutable randomActor = getRandArrElement (Set.toList availableActors)
-                while(randomActor=childNumber) do
-                    randomActor <- getRandArrElement (Set.toList availableActors)
-                let randomActorIndex = randomActor-1
-                s<-s/2.0
-                w<-w/2.0
-                childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+                if(Math.Abs ((newS/newW)-(s/w))<0.0000000001) then 
+                    count <- count + 1
+                else
+                    count <- 0
+                // printfn "Old ratio = %e" (s/w)
+                // printfn "New ratio = %e" (newS/newW)
+                // printfn "Difference = %e" (Math.Abs ((newS/newW)-(s/w)))
+                s <- newS
+                w <- newW
 
-                if(count=3) then 
-                    //printfn "ratio is %f" (s/w)  
+                if(Set.count availableActors=1) then
                     availableActors <- Set.remove childNumber availableActors
-                    bossRef<!Done(true)
+                   // printfn "xxxx %i" childNumber
+                    bossRef<!Done(childNumber)
+                else
+                    let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                    while(randomActor=childNumber) do
+                        randomActor <- getRandArrElement (Set.toList availableActors)
+                    let randomActorIndex = randomActor-1
+                    s<-s/2.0
+                    w<-w/2.0
+                    childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+
+                // if(count=3) then 
+                //     //printfn "ratio is %f" (s/w)  
+                //     availableActors <- Set.remove childNumber availableActors
+                //     bossRef<!Done(true)
+            else 
+                //printfn "%f" (s/w)
+                availableActors <- Set.remove childNumber availableActors
+                if(Set.isEmpty availableActors) then
+                    bossRef<!Done(childNumber)
+                else
+                    let mutable randomActor = getRandArrElement (Set.toList availableActors)
+                    let randomActorIndex = randomActor-1
+                    s<-s/2.0
+                    w<-w/2.0
+                    childRefs.Item(randomActorIndex)<!Pong(randomActor,s,w)
+                    bossRef<!Done(childNumber)
 
         return! loop()
     }
@@ -223,7 +238,7 @@ let parent (mailbox: Actor<_>) =
                 let name = i.ToString()
                 let childref = spawn system name child
                 childRefList <- childRefList @ [childref]
-                childref<!IntializeChild(i+1,neighbours,parentRef)
+                childref<!IntializeChild(i,neighbours,parentRef)
 
             for i=0 to childRefList.Length-1 do
                 childRefList.Item(i)<!ReferenceList(childRefList)
@@ -236,7 +251,7 @@ let parent (mailbox: Actor<_>) =
         | Done(x) ->
             completedActors<-completedActors+1
             //let i = Set.count availableActors
-            printfn "%i" completedActors
+            printfn "Completed %i" x
            // printfn "%b" (Set.isEmpty availableActors)
             
             if(completedActors=nodes) then 
