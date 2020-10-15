@@ -251,7 +251,7 @@ let parent (mailbox: Actor<_>) =
         | Done(x) ->
             completedActors<-completedActors+1
             //let i = Set.count availableActors
-            printfn "Completed %i" x
+            //printfn "Completed %i" x
            // printfn "%b" (Set.isEmpty availableActors)
             
             if(completedActors=nodes) then 
