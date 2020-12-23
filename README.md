@@ -39,8 +39,8 @@ w
 where s and w are the current values of an actor.
 - **Termination:** If an actors ratio s/w
 did not change more than 10<sup>−10</sup> in
-3 consecutive rounds the actor terminates. WARNING: the values s
-and w independently never converge, only the ratio does.
+3 consecutive rounds the actor terminates. **WARNING: the values s
+and w independently never converge, only the ratio does.**
 
 **Topologies** The actual network topology plays a critical role in the dissemination speed of Gossip protocols. As part of this project you have to experiment
 with various topologies. The topology determines who is considered a neighboor
