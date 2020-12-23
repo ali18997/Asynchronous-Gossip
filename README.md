@@ -26,7 +26,7 @@ has heard the rumor. It stops transmitting once it has heard the rumor
 
 **Push-Sum algorithm for sum computation**
 - **State:** Each actor Ai maintains two quantities: s and w. Initially, s =
-xi = i (that is actor number i has value i, play with other distribution if
+x<sub>i</sub> = i (that is actor number i has value i, play with other distribution if
 you so desire) and w = 1
 - **Starting:** Ask one of the actors to start from the main process.
 - **Receive:** Messages sent and received are pairs of the form (s, w). Upon
